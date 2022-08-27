@@ -1,5 +1,5 @@
-const key = "44e2afe2d1cea3ca3cee";
-const secret = "601c54da256c22d5c5295d79f8742f390dbb23eb9c4f8bc61af18fdaef4ff135";
+const key = "af4009cdbc91405bdd74";
+const secret = "819781d7cecee342a19e92f0c820d4396d8099b3f9150044e05fcbcd2a36658f";
 
 
 const axios = require('axios');

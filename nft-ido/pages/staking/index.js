@@ -8,8 +8,9 @@ import {Web3Provider} from "@ethersproject/providers";
 import erc721abi from "../../artifacts/erc721abi.json"
 import  stakingabi from "../../artifacts/stakingabi.json"
 export default function staking() {
-   
 
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { chainId, account, activate, active, library } = useWeb3React(); 
     const NFTCONTRACT = "0xaDb5a18F0d6823b1C473a73e92938545583608F4";
     const STAKINGCONTRACT = "0xe8DCcaB339512F86d052558C7515cEb10CDf480b"
