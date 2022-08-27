@@ -1,26 +1,26 @@
-
+import Link from "next/link"
 const products = [
     {
       id: 1,
       name: 'NFT Minting',
       href: '/',
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+      imageSrc: '/images/NFTminting.png',
       imageAlt: "",
       description: 'Minting NFT',
     },
     {
-        id: 1,
+        id: 2,
         name: 'NFT Staking',
         href: '/',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+        imageSrc: '/images/NFTstaking.webp',
         imageAlt: "",
         description: "Stake your NFTs here and get Rewards",
       },
       {
-        id: 1,
+        id: 3,
         name: 'NFTDO',
         href: '/',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+        imageSrc: '/images/NFTDO.jpeg',
         imageAlt: "",
         description: 'Particiapte in NFT idos',
       },
@@ -36,6 +36,7 @@ const products = [
   
           <div className="mt-6 grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-10">
             {products.map((product) => (
+                <Link href="/staking">
               <div key={product.id} className="group relative">
                 <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                   <img
@@ -56,6 +57,7 @@ const products = [
                   </div>
                 </div>
               </div>
+              </Link>
             ))}
           </div>
         </div>
