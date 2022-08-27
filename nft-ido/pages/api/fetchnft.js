@@ -1,6 +1,6 @@
 
 const alchemyApiid = "plwplyMH74WLHr4VSM19T0iq1WENharo"
-const alchemycontractAddress = "0xC89668c76473F06D93FA7De59A3Df8930574fA7D";
+const alchemycontractAddress = "0xadF7F3Ee85683Bd34eA0978a20fa9d5425956be6";
 
 
 const options = {method: 'GET', headers: {Accept: 'application/json'}};
@@ -13,7 +13,7 @@ export const getAlchemyNfts = async (account) => {
     return data
     };
 
-  const contractAddress = "0xC89668c76473F06D93FA7De59A3Df8930574fA7D";
+  const contractAddress = "0xadF7F3Ee85683Bd34eA0978a20fa9d5425956be6";
   const apikey = "ckey_d5713b3178474a4ab7142522c44";
 
   export const getNfts = async () => {

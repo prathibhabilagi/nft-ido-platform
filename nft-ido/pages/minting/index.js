@@ -1,20 +1,18 @@
-// import Wallet from "../components/Wallet";
-import Image from 'next/image'
+import Wallet from "../../components/Wallet";
 import React, { useState } from "react";
-// import { pinJSONToIPFS } from "../utils/pinata";
+import { pinJSONToIPFS } from "../../utils/pinata";
 import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
-//import { Contract } from "@ethersproject/contracts";
+import { Contract } from "@ethersproject/contracts";
 // import Nft from "../artifacts/Nft.json";
-// import Tranfer from '../artifacts/Transfer.json'
-//import web3 from "web3";
-// import { config } from "../dapp.config";
-//import { useMoralisWeb3Api } from "react-moralis";
-import { NFTStorage, File } from "nft.storage"
-const fs = require('fs')
+import erc721abi from '../../artifacts/erc721abi.json'
+import web3 from "web3";
+import { config } from "../../dapp.config";
+// import { useMoralisWeb3Api } from "react-moralis";
 
 export default function Mint() {
   const { chainId, account, activate, active, library } = useWeb3React();
-  const Contract_Address = "0x28261f1e1D516eEDF1bB2606f0a2bD74410AD53C";
+  // const Contract_Address = "0x28261f1e1D516eEDF1bB2606f0a2bD74410AD53C";
+  const Contract_Address = "0xadF7F3Ee85683Bd34eA0978a20fa9d5425956be6";
   const [url, setUrl] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -25,14 +23,14 @@ export default function Mint() {
     1: 'etheruem',
     4: "rinkeby",
     56: "bsc",
-    137: "polygon",
+    137: "polygon"
   }
 
-  // const nftContract = new Contract(
-  //   Contract_Address,
-  //   // Tranfer,
-  //   library && library.getSigner()
-  // );
+  const nftContract = new Contract(
+    Contract_Address,
+    erc721abi,
+    library && library.getSigner()
+  );
 
   let base64String = "";
 
@@ -51,487 +49,59 @@ export default function Mint() {
     }
   }
 
-  const API_KEY = process.env.NFT_STORAGE_API_KEY
+  const mintNFT = async () => {
 
-  const storeAsset = async () => {
-
-    console.log(url, description, name);
-
-    const client = new NFTStorage({ token: API_KEY })
-    const metadata = await client.store({
-        name: name,
-        description: description,
-        image: new File(
-            await fs.promises.readFile(url),
-            'MyExampleNFT.png',
-            { type: 'image/png' }
-        ),
-        // iamge: url,
-    })
-    console.log("Metadata stored on Filecoin and IPFS with URL:", metadata.url)
-
-  };
-
-  storeAsset()
-   .then(() => process.exit(0))
-   .catch((error) => {
-       console.error(error);
-       //process.exit(1);
-   });
-
-  const ABI = [
-    {
-      "inputs": [],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "approved",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "Approval",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "operator",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "bool",
-          "name": "approved",
-          "type": "bool"
-        }
-      ],
-      "name": "ApprovalForAll",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "approve",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "nftdata",
-          "type": "string"
-        },
-        {
-          "internalType": "address payable",
-          "name": "_to",
-          "type": "address"
-        }
-      ],
-      "name": "makeAnEpicNFT",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "previousOwner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnershipTransferred",
-      "type": "event"
-    },
-    {
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "safeTransferFrom",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bytes",
-          "name": "data",
-          "type": "bytes"
-        }
-      ],
-      "name": "safeTransferFrom",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "operator",
-          "type": "address"
-        },
-        {
-          "internalType": "bool",
-          "name": "approved",
-          "type": "bool"
-        }
-      ],
-      "name": "setApprovalForAll",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "price",
-          "type": "uint256"
-        }
-      ],
-      "name": "setPrice",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "Transfer",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "transferFrom",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "_price",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        }
-      ],
-      "name": "balanceOf",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "getApproved",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "operator",
-          "type": "address"
-        }
-      ],
-      "name": "isApprovedForAll",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "name",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "ownerOf",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes4",
-          "name": "interfaceId",
-          "type": "bytes4"
-        }
-      ],
-      "name": "supportsInterface",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "symbol",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "tokenURI",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "totalSupply",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
+    const metadata = new Object();
+    metadata.name = name;
+    metadata.image = url;
+    metadata.description = description;
+    //make pinata call
+    const pinataResponse = await pinJSONToIPFS(metadata);
+    if (!pinataResponse.success) {
+      return {
+        success: false,
+        status: "😢 Something went wrong while uploading your tokenURI.",
+      };
     }
-  ]
+    const tokenURI = pinataResponse.pinataUrl;
+    console.log("tokenURI", tokenURI);
+    const to = "0x0802e7C2073F3cfFdeD2e7A11Bb2417F46476B1d";
 
-
+    const transactionParameters = {
+      to: Contract_Address,
+      from: account,
+      value: parseInt(web3.utils.toWei(String(config.price), "ether")).toString(
+        16
+      ),
+      data: nftContract.interface.encodeFunctionData("mint", [
+        tokenURI,
+        to,
+      ]),
+    };
+    //sign the transaction via Metamask
+    try {
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
+      return {
+        success: true,
+        status:
+          "✅ Check out your transaction on Etherscan: https://ropsten.etherscan.io/tx/" +
+          txHash,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message,
+      };
+    }
+  };
 
   return (
     <div className="bg-gray-900 h-screen">
       <div>
-        {/* <Wallet /> */}
+        <Wallet />
       </div>
       <div className="pt-12 px-4 sm:px-6 lg:px-8 lg:pt-10">
         <div className="text-center">
@@ -671,8 +241,7 @@ export default function Mint() {
                       <button
                         type="submit"
                         className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        // onClick={mintNFT}
-                        onClick={storeAsset}
+                        onClick={mintNFT}
                       >
                         Mint NFT
                       </button>
@@ -690,4 +259,3 @@ export default function Mint() {
 
 
 // https://api.etherscan.io/api?module=account&action=addresstokenbalance&address=0xB036713179E0607F96C4a756927A8822Fd19fDFF&page=1&offset=100&apikey=IY97A2ZVWVI44YAWA35XVDWQN8CJAVAEA6
-

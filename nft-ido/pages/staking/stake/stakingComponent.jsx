@@ -2,9 +2,27 @@ import React, { useEffect, useState } from "react";
 import { getAlchemyNfts, getMetadata } from "../../api/fetchnft";
 import { useWeb3React } from "@web3-react/core";
 import web3 from "web3";
+import { Contract } from "@ethersproject/contracts";
+import erc721abi from "../../../artifacts/erc721abi.json";
+import stakingabi from "../../../artifacts/stakingabi.json";
 
-export default function StakeComponent(nftcontract, stakingcontract) {
+export default function StakeComponent() {
   const { chainId, account, activate, active, library } = useWeb3React();
+
+  const NFTCONTRACT = "0xadF7F3Ee85683Bd34eA0978a20fa9d5425956be6";
+  const STAKINGCONTRACT = "0x5d19F3b0f8b8048634238D3F0e76527277C73703";
+
+  const nftcontract = new Contract(
+    NFTCONTRACT,
+    erc721abi,
+    library && library.getSigner()
+  );
+
+  const stakingcontract = new Contract(
+    STAKINGCONTRACT,
+    stakingabi,
+    library && library.getSigner()
+  );
 
   const [userNft, setUserNft] = useState();
   const [nfttokenID, setNfttokenID] = useState();
@@ -16,14 +34,19 @@ export default function StakeComponent(nftcontract, stakingcontract) {
     FetchMetaData(nftData);
   };
 
-  const FetchMetaData = (data) => {
+  const FetchMetaData = async (data) => {
+
+    console.log("nftcontract", await nftcontract.balanceOf(account));
     const arr = [];
-    data?.ownedNfts.map((item) => {
+    data?.ownedNfts.map(async(item) => {
       arr.push(item.id.tokenId);
       setNfttokenID(arr);
     });
     FetchNFTMetaData(arr);
   };
+
+  
+ 
 
   const FetchNFTMetaData = async (nfttokenID) => {
     const tokenid = nfttokenID?.map(async (item) => {
@@ -50,7 +73,6 @@ export default function StakeComponent(nftcontract, stakingcontract) {
               key={index}
               className="py-10 px-6 bg-gray-800 text-center rounded-lg xl:px-10 xl:text-left m-2"
             >
-              {console.log(index)}
               <div className="flex flex-col justify-center items-center">
                 <img
                   className="mx-auto h-40 w-40 rounded-full xl:w-56 xl:h-56"

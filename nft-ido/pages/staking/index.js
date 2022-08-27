@@ -14,8 +14,8 @@ import ClaimComponent from "./stake/claimRewardComponent";
 export default function StakingCard(props) {
   const { chainId, account, activate, active, library } = useWeb3React();
 
-  const NFTCONTRACT = "0xC89668c76473F06D93FA7De59A3Df8930574fA7D";
-  const STAKINGCONTRACT = "0xe8DCcaB339512F86d052558C7515cEb10CDf480b";
+  const NFTCONTRACT = "0xadF7F3Ee85683Bd34eA0978a20fa9d5425956be6";
+  const STAKINGCONTRACT = "0x5d19F3b0f8b8048634238D3F0e76527277C73703";
 
   const nftcontract = new Contract(
     NFTCONTRACT,
