@@ -1,130 +1,75 @@
-import { useState } from 'react';
-//import { LoaderSVG } from '@/components/svg';
+import React, { useEffect, useState } from "react";
+import { getAlchemyNfts, getMetadata } from "../../api/fetchnft";
+import { useWeb3React } from "@web3-react/core";
+import web3 from "web3";
 
-export default function Stake(props) {
- 
-  //const [stakeAmount, setStakeAmount] = useState('');
+export default function StakeComponent(nftcontract, stakingcontract) {
+  const { chainId, account, activate, active, library } = useWeb3React();
 
-  const item = {
-    name: 'stake',
-    label: 'Available  tokens',
-    totalTokens: '0',
-    imgSrc: 'images/NFTminting.png',
-    alt: 'flash',
-    button: 'Stake NFT',
-    icon: 'images/NFTminting.png',
-    iconalt: 'receive',
-    subLabel: '',
+  const [userNft, setUserNft] = useState();
+  const [nfttokenID, setNfttokenID] = useState();
+  const [metaData, setMetaData] = useState([]);
+
+  const FetchAcoountNFT = async () => {
+    const nftData = await getAlchemyNfts(account);
+    setUserNft(nftData);
+    FetchMetaData(nftData);
   };
-//   const setMaxStakeAmount = () => {
-//     setStakeAmount(lPBalance.toString());
-//   };
 
-  const textboxComponent = () => {
-    return (
-      <div className="flex justify-center flex-grow">
-        <div className="relative w-11/12 rounded-md shadow-sm">
-          <input
-           // value={}
-            // onChange={(e) =>
-            //   isAllowance ? setStakeAmount(e.target.value) : undefined
-            // }
-            type="text"
-            name="lp"
-            id="lp"
-            className="block w-full py-3 border-gray-300  focus:ring-blue-500 focus:border-blue-500 rounded-xl sm:text-sm"
-            placeholder="Tokens to stake"
-           // disabled={!isAllowance}
-          />
-          <div className="absolute inset-y-0 right-0 flex items-center px-2">
-            <label htmlFor="maximum-button" className="sr-only">
-              Maximum
-            </label>
-            <button
-             // onClick={isAllowance ? setMaxStakeAmount : undefined}
-              id="maximum-button"
-              type="button"
-              //disabled={!isAllowance}
-              className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-zee-lightBlue hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zee-blue"
-            >
-              Max
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+  const FetchMetaData = (data) => {
+    const arr = [];
+    data?.ownedNfts.map((item) => {
+      arr.push(item.id.tokenId);
+      setNfttokenID(arr);
+    });
+    FetchNFTMetaData(arr);
   };
+
+  const FetchNFTMetaData = async (nfttokenID) => {
+    const tokenid = nfttokenID?.map(async (item) => {
+      const nftData = await getMetadata(item);
+      return nftData;
+    });
+    const allPromises = await Promise.all(tokenid);
+    setMetaData(allPromises);
+  };
+
+  useEffect(() => {
+    account && FetchAcoountNFT();
+  }, [account]);
+
   return (
-    <div
-      key={item.name}
-      className="flex flex-col px-2 py-4 overflow-hidden rounded-lg shadow-lg bg-light-gray"
-    >
-      <div className="flex-shrink-0 px-4">
-        <div>
-          <img
-            className="inline-block w-16 mr-2"
-            src={item.imgSrc}
-            alt={item.alt}
-          />
-          <div className="block px-4 py-2">
-            <p className="inline-flex justify-center text-sm font-bold text-gray-500 md:pr-2 lg:pr-4">
-              {item.label}
-            </p>
-          </div>
-
-          <div className="block px-3 pb-5 ">
-            <h1 className="text-2xl font-bold text-black">
-           "we have to show NFTs"  {/* {lPBalance.toFormat(4)} ZEE{' '} */}
-            </h1>
-          </div>
-
-          <hr className="px-0 py-2 text-gray-100"></hr>
-
-          {/* <div
-            className={`flex flex-between pl-1 py-3 ${
-              !isAllowance ? 'invisible' : ''
-            }`}
-          >
-            {textboxComponent()}
-          </div> */}
-
-          <div className="flex py-4 ">
-           <span>Stake</span>
-            {/* {!isAllowance ? (
-              <button
-                type="button"
-                onClick={() => setAllowance('no')}
-                disabled={allowanceProgress}
-                className="flex justify-center mx-2 px-2.5 py-3 w-full text-sm font-medium rounded-3xl shadow-sm text-white bg-zee-primary hover:bg-zee-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2"
-              >
-                {allowanceProgress ? (
-                  <>
-                    <LoaderSVG /> Approving
-                  </>
-                ) : (
-                  `Approve`
-                )}
-              </button>
-            ) : (
-              <button
-                onClick={() => stakeLP(stakeAmount, false)}
-                disabled={isStaking || stakeAmount < 1}
-                className={`${
-                  isStaking ? 'opacity-50' : ''
-                } flex justify-center mx-2 px-2.5 py-3 w-full text-sm font-medium rounded-3xl shadow-sm text-white bg-zee-primary hover:bg-zee-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2`}
-              >
-                {isStaking ? (
-                  <>
-                    <LoaderSVG />
-                    Staking...
-                  </>
-                ) : (
-                  'Stake'
-                )}
-              </button>
-            )} */}
-          </div>
-        </div>
+    <div className="mx-auto py-12 px-4 max-w-7xl sm:px-6 lg:px-8 lg:py-24">
+      <div className="space-y-12">
+        <ul
+          role="list"
+          className="flex justify-center"
+        >
+          {metaData?.map((item, index) => (
+            <li
+              key={index}
+              className="py-10 px-6 bg-gray-800 text-center rounded-lg xl:px-10 xl:text-left m-2"
+            >
+              {console.log(index)}
+              <div className="flex flex-col justify-center items-center">
+                <img
+                  className="mx-auto h-40 w-40 rounded-full xl:w-56 xl:h-56"
+                  src={item.metadata.image}
+                  alt=""
+                />
+                  <div className="font-medium text-lg leading-6 flex flex-col justify-center items-center mt-6">
+                    <h3 className="text-white">{item.metadata.name}</h3>
+                    <p className="text-indigo-400 pt-3">
+                      {item.metadata.description}
+                    </p>
+                  <div className="mt-6">
+                    <button className="bg-sky-100 py-2 px-6 text-gray-600 rounded-3xl">Approve</button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
