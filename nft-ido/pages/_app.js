@@ -11,8 +11,8 @@ function getLibrary(provider) {
 function MyApp({ Component, pageProps }) {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
-        <Component {...pageProps} />
-      </Web3ReactProvider>
+      <Component {...pageProps} />
+    </Web3ReactProvider>
   )
 }
 
