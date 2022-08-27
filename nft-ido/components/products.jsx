@@ -36,8 +36,8 @@ const products = [
   
           <div className="mt-6 grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-10">
             {products.map((product) => (
-                <Link href="/staking">
-              <div key={product.id} className="group relative">
+                <Link href="/staking" key={product.id}>
+              <div  className="group relative">
                 <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                   <img
                     src={product.imageSrc}
