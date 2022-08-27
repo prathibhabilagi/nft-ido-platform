@@ -10,7 +10,7 @@ import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
 // import { config } from "../dapp.config";
 //import { useMoralisWeb3Api } from "react-moralis";
 import { NFTStorage, File } from "nft.storage"
-import fs from 'fs'
+const fs = require('fs')
 
 export default function Mint() {
   const { chainId, account, activate, active, library } = useWeb3React();

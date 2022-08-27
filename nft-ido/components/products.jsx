@@ -4,6 +4,7 @@ const products = [
       id: 1,
       name: 'NFT Minting',
       href: '/',
+      routing: "minting",
       imageSrc: '/images/NFTminting.png',
       imageAlt: "",
       description: 'Minting NFT',
@@ -12,6 +13,7 @@ const products = [
         id: 2,
         name: 'NFT Staking',
         href: '/',
+        routing: "staking",
         imageSrc: '/images/NFTstaking.webp',
         imageAlt: "",
         description: "Stake your NFTs here and get Rewards",
@@ -20,6 +22,7 @@ const products = [
         id: 3,
         name: 'NFTDO',
         href: '/',
+        routing: "ido",
         imageSrc: '/images/NFTDO.jpeg',
         imageAlt: "",
         description: 'Particiapte in NFT idos',
@@ -36,7 +39,7 @@ const products = [
   
           <div className="mt-6 grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-10">
             {products.map((product) => (
-                <Link href="/staking">
+                <Link href={`${product.routing}`}>
               <div key={product.id} className="group relative">
                 <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                   <img

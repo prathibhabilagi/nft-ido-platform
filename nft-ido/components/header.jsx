@@ -26,14 +26,14 @@ export default function Header(props) {
             <div className="hidden w-auto lg:block">
               <a
                 href="/"
-                className="mr-6 font-sans text-base font-normal text-zee-black hover:text-blue-600"
+                className="mr-8 font-sans text-lg font-normal text-zee-black hover:text-blue-600"
               >
                 Home
               </a>
               {headerDetails.map((item) => (
                 <a
                   href={item.link}
-                  className="mr-6 font-sans text-base font-normal text-zee-black hover:text-blue-600"
+                  className="mr-8 font-sans text-lg font-normal text-zee-black hover:text-blue-600"
                   key={item.name}
                   target={item.target}
                   rel={item.rel}
