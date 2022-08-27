@@ -1,5 +1,13 @@
 
-  import React, { useState } from 'react';
+ // import Web3 from 'web3';
+// import axios from 'axios';
+import React, { useState } from 'react';
+//import WalletConnectProvider from "@walletconnect/web3-provider";
+import {Contract} from "@ethersproject/contracts";
+import { useWeb3React } from "@web3-react/core";
+import {Web3Provider} from "@ethersproject/providers";
+import erc721abi from "../../artifacts/erc721abi.json"
+import  stakingabi from "../../artifacts/stakingabi.json"
 import StakeComponent from './stake/stakingComponent';
  import UnstakeComponent from './stake/unstakeComponent';
  import ClaimComponent from './stake/claimRewardComponent';
@@ -8,6 +16,37 @@ import StakeComponent from './stake/stakingComponent';
   /* Staking UI */
 }
 export default function StakingCard(props) {
+    const { chainId, account, activate, active, library } = useWeb3React(); 
+    const [ approveState, setApproveState ] = useState();
+
+    const NFTCONTRACT = "0xC89668c76473F06D93FA7De59A3Df8930574fA7D";
+    const STAKINGCONTRACT = "0xe8DCcaB339512F86d052558C7515cEb10CDf480b"
+const passingProps = {
+    approveState,
+
+}
+// const getApprove = nftcontract.getApproved()
+// console.log(" state ", getApprove);
+
+     const nftcontract = new Contract(
+        NFTCONTRACT,
+        erc721abi,
+        library && library.getSigner()
+    );
+console.log("nftcontract ", nftcontract);
+
+    const stakingcontract = new Contract(
+      STAKINGCONTRACT,
+      stakingabi,
+      library && library.getSigner()
+    );
+
+    console.log("stakingcontract  ", stakingcontract);
+   
+  const  
+useEffect = () => {
+    setApproveState()
+}
   return (
     <div className="text-center pt-10 pd-10 md:w-4/5 m-auto">
       <div className="mt-18 mb-5">
@@ -24,10 +63,11 @@ export default function StakingCard(props) {
         </div>
       </div>
       <div className="mt-4 max-w-lg mx-auto grid gap-5 px-5 py-10 lg:grid-cols-3 lg:max-w-none">
-        <StakeComponent {...props} />
-         <UnstakeComponent {...props} />
-          <ClaimComponent {...props} />  
-      </div>
-    </div>
-  );
-}
+        <StakeComponent {...passingProps} />
+         <UnstakeComponent {...passingProps} />
+          <ClaimComponent {...passingProps} />  
+
+</div>
+  </div> 
+
+   )}

@@ -2,11 +2,11 @@
 
 const item = {
   name: 'unstake',
-  label: 'Staked ZEE tokens',
+  label: 'Staked NFTs',
   totalTokens: '0',
   imgSrc: 'images/NFTminting.png',
-  alt: 'zee',
-  button: 'Unstake ZEE',
+  alt: 'NFT',
+  button: 'Unstake NFT',
   icon: 'images/NFTminting.png',
   iconalt: 'Lock',
   subLabel: 'Total locked',
