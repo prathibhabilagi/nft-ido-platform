@@ -35,6 +35,7 @@ const products = [
           <h2 className="text-3xl font-bold tracking-tight py-4 text-gray-900">Our Products</h2>
   
           <div className="mt-6 grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-10">
+
             {products.map((product, index) => (
                 <Link href={product.href} key={index}>
               <div  className="group relative">
