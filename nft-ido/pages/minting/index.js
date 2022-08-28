@@ -4,7 +4,7 @@ import { pinJSONToIPFS } from "../../utils/pinata";
 import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
 import { Contract } from "@ethersproject/contracts";
 // import Nft from "../artifacts/Nft.json";
-import Tranfer from '../../abi/transfer.json'
+import erc721abi from '../../artifacts/erc721abi.json'
 import web3 from "web3";
 import { config } from "../../dapp.config";
 // import { useMoralisWeb3Api } from "react-moralis";
@@ -12,7 +12,7 @@ import { config } from "../../dapp.config";
 export default function Mint() {
   const { chainId, account, activate, active, library } = useWeb3React();
   // const Contract_Address = "0x28261f1e1D516eEDF1bB2606f0a2bD74410AD53C";
-  const Contract_Address = "0x11b888a75aA12197172316b647de0df12D82fdc4";
+  const Contract_Address = "0xadF7F3Ee85683Bd34eA0978a20fa9d5425956be6";
   const [url, setUrl] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -28,7 +28,7 @@ export default function Mint() {
 
   const nftContract = new Contract(
     Contract_Address,
-    Tranfer,
+    erc721abi,
     library && library.getSigner()
   );
 
@@ -65,8 +65,7 @@ export default function Mint() {
     }
     const tokenURI = pinataResponse.pinataUrl;
     console.log("tokenURI", tokenURI);
-    // const to = "0xE345CbDE2Eacf71A4912CE62a3F66834C20D3289";
-    const to = "0x86bbBAbF4EdFdCc4213F26Ab327fD0AcA1fDDE3e";
+    const to = "0x0802e7C2073F3cfFdeD2e7A11Bb2417F46476B1d";
 
     const transactionParameters = {
       to: Contract_Address,
@@ -74,7 +73,7 @@ export default function Mint() {
       value: parseInt(web3.utils.toWei(String(config.price), "ether")).toString(
         16
       ),
-      data: nftContract.interface.encodeFunctionData("makeAnEpicNFT", [
+      data: nftContract.interface.encodeFunctionData("mint", [
         tokenURI,
         to,
       ]),

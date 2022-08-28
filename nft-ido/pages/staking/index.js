@@ -7,13 +7,15 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import erc721abi from "../../artifacts/erc721abi.json";
 import stakingabi from "../../artifacts/stakingabi.json";
-import { getNfts, getMetadata, getAlchemyNfts } from "../api/fetchnft";
-import Wallet from "../../components/Wallet";
+import StakeComponent from "./stake/stakingComponent";
+import UnstakeComponent from "./stake/unstakeComponent";
+import ClaimComponent from "./stake/claimRewardComponent";
 
-export default function staking() {
+export default function StakingCard(props) {
   const { chainId, account, activate, active, library } = useWeb3React();
-  const NFTCONTRACT = "0xaDb5a18F0d6823b1C473a73e92938545583608F4";
-  const STAKINGCONTRACT = "0xe8DCcaB339512F86d052558C7515cEb10CDf480b";
+
+  const NFTCONTRACT = "0xadF7F3Ee85683Bd34eA0978a20fa9d5425956be6";
+  const STAKINGCONTRACT = "0x5d19F3b0f8b8048634238D3F0e76527277C73703";
 
   const nftcontract = new Contract(
     NFTCONTRACT,
@@ -21,27 +23,27 @@ export default function staking() {
     library && library.getSigner()
   );
 
+  
+
   const stakingcontract = new Contract(
     STAKINGCONTRACT,
     stakingabi,
     library && library.getSigner()
   );
 
-  const [userNft, setUserNft] = useState();
-
-  const FetchAcoountNFT = async () => {
-    const nftData = await getAlchemyNfts(account);
-    setUserNft(nftData);
-  };
-
-  useEffect(() => {
-    account && FetchAcoountNFT();
-  }, [account]);
-
   return (
-    <div>
-      <Wallet />
-      <p>HELLLOOOOO</p>
+    <div className="text-center pt-10 pd-10 md:w-4/5 m-auto">
+      <div className="mt-18 mb-5">
+        <h1 className="text-3xl tracking-normal font-black text-white sm:text-4xl">
+          NFT STAKING
+        </h1>
+      </div>
+      <div className="mx-auto w-full">
+        <StakeComponent
+          nftcontract={nftcontract}
+          stakingcontract={stakingcontract}
+        />
+      </div>
     </div>
   );
 }
